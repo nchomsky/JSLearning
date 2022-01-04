@@ -39,9 +39,9 @@ const firstName = 'Noah';
 // console.log(job);
 // console.log(year);
 
-var me = 'Jonas'
-let job = 'teacher'
-const year = 1991;
+// var me = 'Jonas'
+// let job = 'teacher'
+// const year = 1991;
 
 // functions
 // console.log(addDecl(2,3));
@@ -88,11 +88,33 @@ const calcAge3 = (birthYear) => {
 calcAge3(1996);
 
 const jonas = {
+    firstName: 'Noah',
     year: 1991,
-    calcAge: function(){
+    calcAge: function () {
         console.log(this);
-    }
-}
+        console.log(2037 - this.year);
+
+        // Solution1
+        // const self = this;
+        // const isMillenial = function(){
+        //     console.log(self);
+        //     console.log(self.year >= 1981 && self.year <= 1996);
+        //     // console.log(this.year >= 1981 && this.year <= 1996);
+        // }
+
+        //Solution2 - Arrow function inherits the this keyword from the parent scope
+        const isMillenial = () => {
+            console.log(`This in an arrow function: ${this}`);
+            console.log(this.year >= 1981 && this.year <= 1996);
+            // console.log(this.year >= 1981 && this.year <= 1996);
+        }
+        isMillenial();
+    },
+
+    greet: () => {
+        console.log(`Hey ${this.firstName}`)
+    },
+};
 
 jonas.calcAge();
 
@@ -105,4 +127,69 @@ matilda.calcAge = jonas.calcAge;
 matilda.calcAge();
 
 const f = jonas.calcAge;
-f();
+// f() is just a regular function call... there is no owner to this function (no object is belongs to) that's why it returns undefined when referncing 'this'
+// f();
+
+//If 'this' is used in a regular function call, then 'this' is undefined even if inside a method.
+jonas.greet();
+jonas.calcAge();
+
+// const addExpr = function (a,b){
+//     return a+b;
+// };
+
+//Arguments exists in regular function declarations and expressions, but not in arrow functions
+
+
+
+
+//----Primitives vs Objects----\\
+
+// let age = 30;
+// let oldAge = age;
+// age = 31;
+// console.log(age);
+// console.log(oldAge);
+
+// const me = {
+//     name: 'Noah',
+//     age: 30,
+// };
+
+// const friend = me;
+// friend.age = 27;
+// console.log('Friend',friend);
+// console.log('Me', me);
+
+
+//Primitive Types
+let lastName = 'Williams';
+let oldLastName =  lastName;
+lastName = 'Davis';
+console.log(lastName, oldLastName); //prints Davis, Williams\
+
+//Reference Types
+const jessica = {
+    firstName: 'Jessica',
+    lastName: 'Williams',
+    age: 27,
+};
+const marriedJessica = jessica;
+marriedJessica.lastName = 'Davis';
+console.log('Before Marriage: ', jessica);
+console.log('After Marriage: ', marriedJessica);
+
+//Copying object
+const jessica2 = {
+    firstName: 'Jessica',
+    lastName: 'Williams',
+    age: 27,
+    family: ['Alice', 'Bob'],
+};
+
+const jessicaCopy = Object.assign({}, jessica2);
+jessicaCopy.lastName = 'Davis';
+console.log('Before Marriage: ', jessica2);
+console.log('After Marriage: ', jessicaCopy);
+
+jessicaCopy.family.push('Steve', 'Jackson');
