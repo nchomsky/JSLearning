@@ -207,3 +207,97 @@ const poll = {
 };
 
 document.querySelector('.poll').addEventListener('click',poll.registerNewAnswer.bind(poll));
+
+
+
+const runOnce = function(){
+    console.log('This will never run again');
+}
+runOnce();
+
+// IIFE - Immediately Invoked function Expression
+(function(){
+    console.log('This will never run again');
+    // encapsulated inside of this function scope created here - can't access outside of this
+    const isPrivate = 23;
+})();
+
+{
+    const isPrivate = 23;
+    var notPrivate = 46;
+}
+
+console.log(notPrivate)
+
+
+
+
+
+// Closures - makes a function remember all the variables that existed when the function was created
+// Every function always has access to the variable environment of the execution context in which it was created (this connection is called closure... the variable environment that is attached to the function)
+
+const secureBooking = function(){
+    let passengerCount = 0;
+
+    return function(){
+        passengerCount++;
+        console.log(`${passengerCount} passengers`);
+    }
+}
+
+const booker = secureBooking();
+booker();
+booker();
+
+console.dir(booker);
+
+//Exmaple 1 of Closures
+let f;
+
+const g = function(){
+    const a = 23;
+    f = function(){
+        console.log(a*2);
+    }
+}
+
+const h = function(){
+    const b = 777;
+    f = function(){
+        console.log(b*2);
+    };
+}
+
+g();
+f();
+console.dir(f)
+
+// Reassigning f function
+h();
+f();
+console.dir(f)
+
+//Exmaple 2 of Closures
+const boardPassengers = function(n, wait){
+    const perGroup = n / 3;
+
+    setTimeout(function(){
+        console.log(`We are now boarding all ${n} passengers`);
+        console.log(`There are 3 groups, each with ${perGroup} passengers`);
+    }, wait * 1000);
+
+    console.log(`will start boarding in ${wait} seconds`);
+}
+
+// Closure has priority over scope-chain will not use this value even though boardPassengers popped off the execution context
+const perGroup = 1000;
+boardPassengers(180,3);
+
+(function(){
+    const header = document.querySelector('h1');
+    header.style.color = 'red';
+    document.querySelector('body').addEventListener('click', () => {
+        header.style.color = 'blue';
+    })
+    console.log('IIFE has run')
+})();
