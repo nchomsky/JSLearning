@@ -183,3 +183,27 @@ const addVAT2 = (rate) => (value) => {
     return value + value*rate
 }
 console.log(addVAT2(.23)(100))
+
+
+
+const poll = {
+    question: 'What is your favorite programming language?',
+    options: ['0: JavaScript', '1: Python', '2: Rust', '3: C++'],
+    answers: new Array(4).fill(0),
+    registerNewAnswer(){
+        const answer = prompt(`${this.question}\n ${this.options.join('\n')}\n(Write option number)`);
+        if(answer>=0 && answer<this.options.length){
+            this.answers[answer] = this.answers[answer] + 1;
+        }
+        this.displayResults();
+    },
+    displayResults(type = 'array'){
+        if(type === 'array'){
+            console.log(this.answers);
+        } else if(typeof type === 'string') {
+            console.log(`Poll results are ${this.answers.join(', ')}`);
+        }
+    },
+};
+
+document.querySelector('.poll').addEventListener('click',poll.registerNewAnswer.bind(poll));
