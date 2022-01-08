@@ -83,6 +83,36 @@ const displayMovements = function(movements){
 
 displayMovements(account1.movements);
 
+const calcDisplayBalance = function(movements){
+    const balance = movements.reduce((acc,mov)=> {
+        return acc + mov;
+    }, 0);
+    labelBalance.textContent = `${balance} EUR`
+}
+calcDisplayBalance(account1.movements);
+
+const calcDisplaySummary = (movements) => {
+    const incomes = movements.filter(mov => mov > 0).reduce((acc,mov) => acc + mov);
+    const withdrawals = movements.filter(mov => mov < 0).reduce((acc,mov) => acc + mov);
+    const interest = movements.filter(mov => mov > 0).map(deposit => (deposit * 1.2) / 100).filter(el => el >= 1 ).reduce((acc, int) => acc + int, 0);
+    labelSumIn.textContent = `${incomes} EUR`;
+    labelSumOut.textContent = `${withdrawals} EUR`;
+    labelSumInterest.textContent = `${interest} EUR`;
+};
+calcDisplaySummary(account1.movements);
+
+const createUsernames = function(accounts){
+    accounts.forEach(el => {
+        el.username = el.owner.toLowerCase().split(' ').map( name => name[0]).join('')
+        
+        });
+    }
+
+createUsernames(accounts);
+console.log(accounts);
+
+
+
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 // LECTURES
@@ -160,20 +190,90 @@ movements.forEach(function(movement, index, array){
 */
 
 // Map
-const currencies = new Map([
-    ['USD', 'United States dollar'],
-    ['EUR', 'Euro'],
-    ['GBP', 'Pound sterling'],
-  ]);
+// const currencies = new Map([
+//     ['USD', 'United States dollar'],
+//     ['EUR', 'Euro'],
+//     ['GBP', 'Pound sterling'],
+//   ]);
 
-  currencies.forEach(function(val, key, map){
-    console.log(`${key}: ${val}`);
-  });
+//   currencies.forEach(function(val, key, map){
+//     console.log(`${key}: ${val}`);
+//   });
 
-// SET
-const currrenciesUnique = new Set(['USD','GBP','USD', 'EUR', 'EUR']);
-console.log(currrenciesUnique);
+// // SET
+// const currrenciesUnique = new Set(['USD','GBP','USD', 'EUR', 'EUR']);
+// console.log(currrenciesUnique);
 
-currrenciesUnique.forEach(function(val,key, map){
-    console.log(`${key}: ${val}`);
-});
+// currrenciesUnique.forEach(function(val,key, map){
+//     console.log(`${key}: ${val}`);
+// });
+
+const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+/*
+const eurToUsd = 1.1;
+
+const movementsUsd = movements.map(mov => mov * eurToUsd);
+
+console.log(movementsUsd);
+
+movements.map()
+
+*/
+
+// console.log(movements);
+// // Acc -> SNOWBALL
+// const balance = movements.reduce(function(acc,cur, i , arr){
+//     console.log(`Iteration ${i}: ${acc}`);
+//     return acc + cur;
+// }, 0);
+
+// console.log(balance);
+
+// const max = movements.reduce((acc, mov) => {
+//     if (acc > mov)
+//         return acc;
+//     else
+//         return mov;
+// }, movements[0]);
+
+// const dogAges1 = [5,2,4,1,15,8,3];
+// const dogAges2 = [16, 6, 10, 5, 6, 1, 4];
+// const calcAverageHumanAge = (ages) => {
+//     const humanAge = ages.map(el => {
+//         if(el <= 2){
+//             return el*2;
+//         }else if(el > 2){
+//             return (el*4) + 16;
+//         }
+//     });
+
+//     console.log('human age array:' + humanAge)
+
+//     const humanAgeFiltered = humanAge.filter(el => el >= 18);
+//     console.log('human age filtered: ' + humanAgeFiltered)
+
+//     const avgAge = humanAgeFiltered.reduce((acc,cur)=>{
+//         return acc + cur;
+//     })/humanAgeFiltered.length;
+
+//     return avgAge
+// }
+
+// console.log('Avg age:' + calcAverageHumanAge(dogAges1));
+// console.log('Avg age:' + calcAverageHumanAge(dogAges2));
+// const eurToUsd = 1.1;
+// const totalDeposit = movements
+// .filter(mov => mov > 0)
+// .map(mov => mov * eurToUsd)
+// .reduce((acc, mov) => acc + mov,0);
+
+// console.log(totalDeposit);
+
+// find only finds first element of array and just the element itself not a new array like filter
+const firstWithdrawal = movements.find(mov => mov < 0);
+console.log(movements);
+console.log(firstWithdrawal);
+
+console.log(accounts);
+const account = accounts.find(acc => acc.owner === 'Jessica Davis');
+console.log(account)
