@@ -81,25 +81,25 @@ const displayMovements = function(movements){
     });
 }
 
-displayMovements(account1.movements);
 
-const calcDisplayBalance = function(movements){
-    const balance = movements.reduce((acc,mov)=> {
+const calcDisplayBalance = function(acc){
+    acc.balance = acc.movements.reduce((acc,mov)=> {
         return acc + mov;
     }, 0);
-    labelBalance.textContent = `${balance} EUR`
+   
+    labelBalance.textContent = `${acc.balance} EUR`
 }
-calcDisplayBalance(account1.movements);
 
-const calcDisplaySummary = (movements) => {
+
+const calcDisplaySummary = (movements, interestRate) => {
     const incomes = movements.filter(mov => mov > 0).reduce((acc,mov) => acc + mov);
     const withdrawals = movements.filter(mov => mov < 0).reduce((acc,mov) => acc + mov);
-    const interest = movements.filter(mov => mov > 0).map(deposit => (deposit * 1.2) / 100).filter(el => el >= 1 ).reduce((acc, int) => acc + int, 0);
+    const interest = movements.filter(mov => mov > 0).map(deposit => (deposit * interestRate) / 100).filter(el => el >= 1 ).reduce((acc, int) => acc + int, 0);
     labelSumIn.textContent = `${incomes} EUR`;
     labelSumOut.textContent = `${withdrawals} EUR`;
     labelSumInterest.textContent = `${interest} EUR`;
 };
-calcDisplaySummary(account1.movements);
+
 
 const createUsernames = function(accounts){
     accounts.forEach(el => {
@@ -109,8 +109,52 @@ const createUsernames = function(accounts){
     }
 
 createUsernames(accounts);
-console.log(accounts);
 
+const updateUI = (acc) => {
+    // Display Movements
+    displayMovements(acc.movements);
+    //Display Balance
+    calcDisplayBalance(acc);
+    //Dispaly Summary
+    calcDisplaySummary(acc.movements, acc.interestRate);
+};
+
+// Event Handlre
+
+let currentAccount;
+btnLogin.addEventListener('click', function(e){
+    // prevent form form submitting
+    e.preventDefault();
+
+    currentAccount = accounts.find(
+        acc => acc.username === inputLoginUsername.value
+    );
+        console.log(currentAccount);
+
+    if(currentAccount?.pin === Number(inputLoginPin.value)){
+        // Display UI and message
+        labelWelcome.textContent = `Welcome Back, ${currentAccount.owner.split(' ')[0]}`;
+        containerApp.style.opacity = 100;
+
+        // Clear inptu fields
+        inputLoginUsername.value = inputLoginPin.value = '';
+        inputLoginPin.blur();
+        updateUI(currentAccount);
+    }
+})
+
+btnTransfer.addEventListener('click', function(e){
+    e.preventDefault();
+    const amount = Number(inputTransferAmount.value);
+    const receiverAcc = accounts.find(acc => acc.username === inputTransferTo.value);
+    inputTransferAmount.value = inputTransferTo.value = '';
+
+    if(amount > 0 && receiverAcc && currentAccount.balance >= amount && receiverAcc?.username !== currentAccount.username){
+        currentAccount.movements.push(-amount);
+        receiverAcc.movements.push(amount);
+        updateUI(currentAccount);
+    }
+})
 
 
 /////////////////////////////////////////////////
@@ -270,10 +314,10 @@ movements.map()
 // console.log(totalDeposit);
 
 // find only finds first element of array and just the element itself not a new array like filter
-const firstWithdrawal = movements.find(mov => mov < 0);
-console.log(movements);
-console.log(firstWithdrawal);
+// const firstWithdrawal = movements.find(mov => mov < 0);
+// console.log(movements);
+// console.log(firstWithdrawal);
 
-console.log(accounts);
-const account = accounts.find(acc => acc.owner === 'Jessica Davis');
-console.log(account)
+// console.log(accounts);
+// const account = accounts.find(acc => acc.owner === 'Jessica Davis');
+// console.log(account)
