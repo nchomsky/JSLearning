@@ -61,10 +61,12 @@ const inputLoanAmount = document.querySelector('.form__input--loan-amount');
 const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
-const displayMovements = function(movements){
+const displayMovements = function(movements, sort = false){
     containerMovements.innerHTML = '';
 
-    movements.forEach(function(mov, i){
+    const movs = sort ? movements.slice().sort((a,b) => a-b) : movements;
+
+    movs.forEach(function(mov, i){
         const type = mov > 0 ? 'deposit' : 'withdrawal';
 
 
@@ -119,7 +121,7 @@ const updateUI = (acc) => {
     calcDisplaySummary(acc.movements, acc.interestRate);
 };
 
-// Event Handlre
+// Event Handlers
 
 let currentAccount;
 btnLogin.addEventListener('click', function(e){
@@ -156,7 +158,42 @@ btnTransfer.addEventListener('click', function(e){
     }
 })
 
+btnLoan.addEventListener('click', function(e){
+    e.preventDefault();
+    const amount = Number(inputLoanAmount.value);
 
+    if(amount > 0 && currentAccount.movements.some(mov => mov >= amount * 0.1)){
+        //Add movement
+        currentAccount.movements.push(amount);
+
+        // Update UI
+        updateUI(currentAccount);
+        inputLoanAmount.value = '';
+    }
+});
+
+btnClose.addEventListener('click', function(e){
+    e.preventDefault();
+    //check to see if current user is account that is being deleted as well as pin
+    if(currentAccount.username === inputCloseUsername.value && currentAccount.pin === Number(inputClosePin.value)){
+        
+       const index = accounts.findIndex(acc => acc.username === currentAccount.username);
+        
+       //Delete account
+        accounts.splice(index, 1);
+        // Hide UI
+        containerApp.style.opacity = 0;
+        
+    }
+    inputClosePin.value = inputCloseUsername.value = '';
+});
+
+let sorted = false;
+btnSort.addEventListener('click', function(e){
+    e.preventDefault();
+    displayMovements(currentAccount.movements, !sorted);
+    sorted = !sorted;
+});
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 // LECTURES
@@ -321,3 +358,20 @@ movements.map()
 // console.log(accounts);
 // const account = accounts.find(acc => acc.owner === 'Jessica Davis');
 // console.log(account)
+
+console.log(movements);
+// console.log(movements.includes(-130));
+
+// const anyDeposits = movements.some(mov => mov > 1500);
+// console.log(anyDeposits);
+
+// // Every - checks to see if alla elements in the array satisfies the condition
+// console.log(movements.every(mov => mov > 0));
+
+
+// const arr = [[1,2,3], [4,5,6], 7, 8];
+// console.log(arr.flat());
+
+// const arrDeep = [[[1,2],3], [4,[5,6]], 7, 8];
+
+
