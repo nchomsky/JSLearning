@@ -178,8 +178,8 @@ const sarah = Object.create(PersonProto);
 
 //----------------------------------------------------------------------------------------------
 //Coding Challenge 2 - Recreate prev car class using ES6 classes
-/*
-class Car {
+
+class CarCl {
     constructor(make, speed){
         this.make = make;
         this.speed = speed;
@@ -204,7 +204,7 @@ class Car {
     }
 }
 
-const ford = new Car('Ford', 120);
+const ford = new CarCl('Ford', 120);
 
 // ford.brake();
 // ford.brake();
@@ -215,7 +215,7 @@ const ford = new Car('Ford', 120);
 // using the setter
 ford.speedUS = 50;
 // console.log(ford)
-*/
+
 
 
 
@@ -375,3 +375,40 @@ const jay = Object.create(StudentProto);
 jay.init('Jay', 1996, 'Math')
 jay.introduce();
 jay.calcAge();
+
+
+//----------------------------------------------------------------------------------
+//Coding challenge 4 
+
+class EVCl extends CarCl{
+
+    //private fields
+    #charge;
+    constructor(make, speed, charge){
+        super(make, speed);
+        this.#charge = charge;
+    }
+
+    // return this to return the current object (method chaining)
+    chargeBattery(chargeTo){
+        this.#charge = chargeTo;
+        return this;
+    }
+
+    accelerate(){
+        this.speed += 20;
+        this.charge -= 1;
+        console.log(`The ${this.make} is going ${this.speed} and the charge is now ${this.#charge}%`);
+        return this;
+    }
+
+    brake(){
+        this.speed -= 10;
+        console.log(`The current speed of ${this.make} is ${this.speed}`);
+        return this;
+    }
+
+}
+
+const rivian = new EVCl('Rivian', 120, 23);
+rivian.accelerate().brake().chargeBattery(50).accelerate();;
