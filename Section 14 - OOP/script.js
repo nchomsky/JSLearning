@@ -397,7 +397,7 @@ class EVCl extends CarCl{
 
     accelerate(){
         this.speed += 20;
-        this.charge -= 1;
+        this.#charge -= 1;
         console.log(`The ${this.make} is going ${this.speed} and the charge is now ${this.#charge}%`);
         return this;
     }
