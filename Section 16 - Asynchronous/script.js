@@ -3,7 +3,6 @@
 const btn = document.querySelector('.btn-country');
 const countriesContainer = document.querySelector('.countries');
 
-
 const renderCountry = (data, className = '') => {
 
     const html = `<article class="country ${className}">
@@ -103,7 +102,7 @@ getCountryDataAndNeighbor('portugal');
 //     });
 
 // }
-
+/*
 const getJSON = function(url, errorMsg = 'Something went wrong'){
     return fetch(url).then(response => {
         console.log(response)
@@ -159,3 +158,50 @@ const whereAmI = (lat, lng) => {
 };
 
 whereAmI('52.508', '13.381')
+
+*/
+/*
+const lotteryPromise = new Promise(function(resolve, reject){
+
+    console.log('Lottery Draw is happening')
+    setTimeout(function(){
+        if(Math.random() >= 0.5){
+            resolve('You WIN');
+        } else {
+            reject(new Error('You lost your money'));
+        }
+    },2000)
+});
+
+lotteryPromise.then(res => console.log(res)).catch(err => console.log(err));
+
+//Promisifying setTimeout
+const wait = function(seconds){
+    return new Promise(function(resolve){
+        setTimeout(resolve, seconds * 1000);
+    });
+};
+
+wait(2).then(()=>{
+    console.log('I waited for 2 seconds')
+    return wait(1);
+}).then(()=>{
+    console.log('I waited for 1 second')
+})
+
+Promise.resolve('abc').then(x => console.log(x));
+Promise.reject('Problem').catch(x => console.error(x));
+
+*/
+///////////////////////////////////////////////////////
+//Async Await
+
+// async keyword makes it asynchronous 
+// can have await keyword
+const whereAmI = async function (country){
+    // await stops code execution until the promise is fulfilled
+    const res = await fetch(`https://restcountries.com/v2/name/${country}`);
+    console.log(res)
+}
+whereAmI('portugal');
+console.log('First');
